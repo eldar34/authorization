@@ -5,6 +5,7 @@
 /vendor
 /.idea
 /.vscode
+/uploaded_files
 .env
 .env.backup
 .phpunit.result.cache

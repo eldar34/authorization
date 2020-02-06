@@ -45,8 +45,7 @@ const HomePage = {
                         <label for="staticName" class="col-sm-5 col-form-label">{{ $t('name') }}</label>
                         <div class="col-sm-7">
                             <input type="text" class="form-control" id="staticName" name="staticName"  :placeholder="$t('name')">
-                            <div class="invalid-feedback">
-                                Please provide a valid city.
+                            <div class="invalid-feedback">                               
                             </div>
                         </div>
                     </div>
@@ -55,7 +54,6 @@ const HomePage = {
                         <div class="col-sm-7">
                             <input type="text" class="form-control" id="staticSurname" name="staticSurname"  :placeholder="$t('surname')">
                             <div class="invalid-feedback">
-                                Please provide a valid city.
                             </div>
                         </div>
                     </div>
@@ -64,7 +62,6 @@ const HomePage = {
                         <div class="col-sm-7">
                             <input type="email" class="form-control" id="staticEmail" name="staticEmail" aria-describedby="emailHelp" placeholder="name@example.com">
                             <div class="invalid-feedback">
-                                Please provide a valid city.
                             </div>
                         </div>                        
                     </div>
@@ -73,7 +70,6 @@ const HomePage = {
                         <div class="col-sm-7">
                             <input type="password" class="form-control" id="inputPassword" name="inputPassword" :placeholder="$t('password')">
                             <div class="invalid-feedback">
-                                Please provide a valid city.
                             </div>
                         </div>
                     </div>
@@ -82,7 +78,6 @@ const HomePage = {
                         <div class="col-sm-7">
                             <input type="password" class="form-control" id="inputConfPassword" name="inputConfPassword" :placeholder="$t('confpass')">
                             <div class="invalid-feedback">
-                                Please provide a valid city.
                             </div>
                         </div>                    
                     </div>
@@ -91,7 +86,6 @@ const HomePage = {
                         <div class="col-sm-7">
                             <input ref="file" type="file" class="form-control-file" id="staticFile" name="file" lang="ru">
                             <div class="invalid-feedback">
-                                Please provide a valid city.
                             </div>
                         </div>                        
                     </div>
