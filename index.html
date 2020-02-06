@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div id="app" class="mt-4">
+                <button @click="changeLang('en')" class="btn btn-primary">Us</button>
+                <button @click="changeLang('ru')" class="btn btn-primary">Ru</button>
+                <input type="hidden" id="langPosition" :value="langVal" />
+                <div class="col-sm-12 mt-3">                    
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            
+                            <div class="navbar-nav offset-3">
+
+                                <router-link tag="a" class="nav-item nav-link" to="/" exact active-class="active">
+                                    {{ $t('registr') }}
+                                </router-link>
+
+                            </div>
+                        </div>
+                    </nav>
+                    
+                    <router-view>
+
+                    </router-view>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script type="text/javascript" src="assets/js/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="assets/js/vue.js"></script>
+    <script type="text/javascript" src="assets/js/vue-i18n.js"></script>
+    <script type="text/javascript" src="assets/js/vue-router.js"></script>
+    <script type="text/javascript" src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="assets/js/components.js"></script>
+
+</body>
+
+</html>
