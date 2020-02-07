@@ -22,11 +22,20 @@
                 <div class="col-sm-12 mt-3">                    
                     <nav class="navbar navbar-expand-lg navbar-light bg-light">
                         <div class="collapse navbar-collapse" id="navbarNav">
-                            
-                            <div class="navbar-nav offset-3">
+                            <div v-if="guest" class="navbar-nav offset-4">
+                                
+                                <a @click="logout" class="nav-item nav-link" href="#">
+                                    {{ $t('logoutMsg') }}
+                                </a>
+
+                            </div>
+                            <div v-else class="navbar-nav offset-3">
 
                                 <router-link tag="a" class="nav-item nav-link" to="/" exact active-class="active">
                                     {{ $t('registr') }}
+                                </router-link>
+                                <router-link tag="a" class="nav-item nav-link" to="/login" active-class="active">
+                                    {{ $t('login') }}
                                 </router-link>
 
                             </div>

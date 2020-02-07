@@ -19,7 +19,6 @@ class Connection {
         $pdo = new \PDO($this->dsn, $this->myname, $this->psc, $this->opt);
         return $pdo;
     }
-
 }
 
 
