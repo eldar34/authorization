@@ -11,19 +11,21 @@ const i18n = new VueI18n({
         en: {
             name: "Name",
             surname: "Surname",
-            phone: "Phone",
             password: "Password",
             confpass: "Confirm Password",
             addfile: "Add File",
             registr: "Registration",
             regButton: "Sign up",
             signButton: "Sign in",
-            login: "Login",            
+            login: "Login",
+            userMassage: 'Hello',
+            logoutMsg: 'Logout',
+            userSuccess: 'User',
+            userRegis: 'successfully registered',            
         },
         ru: {
             name: "Имя",
-            surname: "Фамилия",
-            phone: "Номер",
+            surname: "Фамилия",            
             password: "Пароль",
             confpass: "Подтв. Пароля",
             addfile: "Загрузка Файла",
@@ -31,6 +33,10 @@ const i18n = new VueI18n({
             regButton: "Зарегистрироваться",
             signButton: "Войти",
             login: "Вход",
+            userMassage: 'Привет',
+            logoutMsg: 'Выйти',
+            userSuccess: 'Пользователь',
+            userRegis: 'успешно зарегестрирован'                  
         }
     }
 });
@@ -157,6 +163,7 @@ const LoginPage = {
                     if ('auth' in result) {
                         if (result.auth == 'login') {
                             //авторизация прошла успешно
+                            this.$router.push('/user');
                         } else {
                             console.log(position);
                             console.log(result);
@@ -195,12 +202,62 @@ const LoginPage = {
     }
 };
 
+//Компонент для Пользователя
+
+const UserPage = {
+    data() {
+        return {            
+            filePath: '',
+            userLoginName: ''
+        }
+    },
+    template: `
+                    <div class="col-sm-12">
+                        <p class="text-center mt-4">
+                            {{ $t('userMassage') + ' ' + userLoginName }}
+                        </p>
+                        
+                        <div class="text-center">                        
+                            <img :src="filePath" class="rounded" style="width: 200px; height: 200px;">
+                        </div>
+                    </div>                    
+                    
+`,
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            $.ajax({
+                type: 'POST',
+                url: 'serverLogin.php',
+
+                success: function (data) {
+                    let result = JSON.parse(data);
+
+                    if (result.auth == 'login') {
+                        vm.filePath = result.file;
+                        vm.userLoginName = result.name;
+                        eventEmmiter.$emit('loginTry');
+                    } else {
+                        vm.$router.push('/login');
+                    }
+                },
+                error: function (xhr, str) {
+                    alert('Возникла ошибка: ' + xhr.responseCode);
+                }
+            });
+
+        });
+    },
+    computed: {
+        
+    }
+};
 
 // Связываем маршруты с компонентами
 
 const routes = [
     { path: '/', component: HomePage },
-    { path: '/login', component: LoginPage }
+    { path: '/login', component: LoginPage },
+    { path: '/user', component: UserPage }
 ];
 
 // Передаём routes во VueRoutes routes: routes
@@ -218,8 +275,8 @@ new Vue({
     i18n,
     router,
     data: {
-        msg: "Hello",
-        langVal: 0
+        langVal: 0,
+        guest: false
     },
     methods: {
         changeLang(locale) {
@@ -229,15 +286,36 @@ new Vue({
             } else {
                 this.langVal = 1;
             }
+        },
+        logout() {
+            $.ajax({
+                type: 'GET',
+                url: 'serverAuth.php',
+                data: { action: 'out' },
+
+                success: function (data) {
+                    let result = JSON.parse(data);
+                    console.log(result);
+                }.bind(this),
+                error: function (xhr, str) {
+                    alert('Возникла ошибка: ' + xhr.responseCode);
+                }
+            });
+
+            this.guest = false;
+            this.$router.push({ path: '/' });
         }
     },
     components: {
-        HomePage
+        HomePage,
+        UserPage
     },
     created() {
-        
+        eventEmmiter.$on('loginTry', () => {
+            this.guest = true;
+        })
     },
     beforeCreate: function () {
-
+        
     }
 });
