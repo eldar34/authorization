@@ -77,8 +77,48 @@ class Validate
                 $response['field'] = $fieldName;
                 $response['errors'] = $errors;
                 return $response;
-        }       
+        }      
+    }
+    
+    public function forImage($fieldName, $fileTmpPath, $fileName, $fileSize, $fileType='image/png'){
 
-    }   
+        $response = [];
+        $errors = [];        
+
+        if($fileSize > 4194304){
+            array_push($errors,' file must be smaller than 4мб');
+            array_push($errors,' файл должен быть меньше 4мб');
+            $response['status'] = 'error';
+            $response['field'] = $fieldName;
+            $response['errors'] = $errors;
+            return $response;
+        }
+
+        $allowedfileTypes = array('image/jpg', 'image/jpeg', 'image/gif', 'image/png');
+        if (!in_array($fileType, $allowedfileTypes)){
+            array_push($errors,' file must be format(jpg, gif, png)');
+            array_push($errors,' файл должен быть фомата(jpg, gif, png)');
+            $response['status'] = 'error';
+            $response['field'] = $fieldName;
+            $response['errors'] = $errors;
+            return $response;
+        }
+
+        $fileNameCmps = explode(".", $fileName);
+        $fileExtension = strtolower(end($fileNameCmps));
+        $allowedfileExtensions = array('jpg', 'gif', 'png');
+        if (!in_array($fileExtension, $allowedfileExtensions)) {
+            array_push($errors,' file must be format(jpg, gif, png)');
+            array_push($errors,' файл должен быть фомата(jpg, gif, png)');
+            $response['status'] = 'error';
+            $response['field'] = $fieldName;
+            $response['errors'] = $errors;
+            return $response;
+        }
+
+        $response['status'] = 'success';
+        $response['field'] = $fieldName;
+        return $response;       
+    }
 
 }

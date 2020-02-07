@@ -101,6 +101,7 @@ const HomePage = {
             userData.append('email', $('input[name="staticEmail"]').val());
             userData.append('password', $('input[name="inputPassword"]').val());
             userData.append('confpass', $('input[name="inputConfPassword"]').val());
+            userData.append('file', this.$refs.file.files[0]);
 
             $.ajax({
                 type: 'POST',

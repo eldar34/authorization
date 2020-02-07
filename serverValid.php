@@ -19,6 +19,18 @@ if (isset($_POST['password'])) {
 if (isset($_POST['confpass'])) {
     $confpass = $_POST['confpass'];
 }
+if (isset($_FILES['file']['tmp_name'])) {
+    $fileTmpPath = $_FILES['file']['tmp_name'];
+}
+if (isset($_FILES['file']['name'])) {
+    $fileName = $_FILES['file']['name'];
+}
+if (isset($_FILES['file']['size'])) {
+    $fileSize = $_FILES['file']['size'];
+}
+if (isset($_FILES['file']['type'])) {
+    $fileType = $_FILES['file']['type'];
+}
 
 
 $result = [];
@@ -32,6 +44,11 @@ $validEmail = $validate->forEmail('staticEmail', $email);
 array_push($result, $validEmail);
 $validPass = $validate->forPass('Pass', $pass, $confpass);
 array_push($result, $validPass);
+
+if(count($_FILES) > 0){
+    $validImg = $validate->forImage('staticFile', $fileTmpPath, $fileName, $fileSize, $fileType);
+    array_push($result, $validImg);
+}
 
 $status_arr = array_column($result, 'status');
 
