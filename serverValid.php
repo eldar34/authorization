@@ -13,6 +13,12 @@ if (isset($_POST['surname'])) {
 if (isset($_POST['email'])) {
     $email = $_POST['email'];
 }
+if (isset($_POST['password'])) {
+    $pass = $_POST['password'];
+}
+if (isset($_POST['confpass'])) {
+    $confpass = $_POST['confpass'];
+}
 
 
 $result = [];
@@ -24,6 +30,8 @@ $validSurname = $validate->forName('staticSurname', $surname);
 array_push($result, $validSurname);
 $validEmail = $validate->forEmail('staticEmail', $email);
 array_push($result, $validEmail);
+$validPass = $validate->forPass('Pass', $pass, $confpass);
+array_push($result, $validPass);
 
 $status_arr = array_column($result, 'status');
 

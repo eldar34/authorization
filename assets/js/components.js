@@ -99,6 +99,8 @@ const HomePage = {
             userData.append('name', $('input[name="staticName"]').val());
             userData.append('surname', $('input[name="staticSurname"]').val());
             userData.append('email', $('input[name="staticEmail"]').val());
+            userData.append('password', $('input[name="inputPassword"]').val());
+            userData.append('confpass', $('input[name="inputConfPassword"]').val());
 
             $.ajax({
                 type: 'POST',
