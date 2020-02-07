@@ -147,4 +147,36 @@ class Auth
             }
         }
     }
+
+    public function logout()
+    {
+        $connection = new Connection();
+        $pdo = $connection->dbConnect();
+
+        session_start();
+        $id = $_SESSION['id'];
+
+        $pdo->query("UPDATE users SET online=0 WHERE id='$id'");
+        //обнуляется поле online, говорящее, что пользователь вышел с сайта (пригодится в будущем)     
+        unset($_SESSION['id']); //удалятся переменная сессии  
+
+        //SetCookie("login", ""); 
+        //удаляются cookie с логином   
+        //SetCookie("password", ""); 
+        //удаляются cookie с паролем
+        unset($_COOKIE['login']);
+        setcookie('login', null, -1, '/');
+        unset($_COOKIE['password']);
+        setcookie('password', null, -1, '/');
+
+        //header('Location: http://' . $_SERVER['HTTP_HOST'] . '/'); 
+        //перенаправление на главную страницу сайта
+        $error[] = 'User logout';
+        $error[] = 'Пользователь вышел';
+
+        $response['auth'] = 'logout';
+        $response['errors'] = $error;
+        echo json_encode($response);
+        exit;
+    }
 }
