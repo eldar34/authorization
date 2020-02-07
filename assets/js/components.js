@@ -40,7 +40,7 @@ const HomePage = {
         }
     },
     template: `
-<form id="signupForm" method="post" class="mt-5" action="">
+<form @submit.prevent="onSubmit" id="signupForm" method="post" class="mt-5" action="">
                     <div class="form-group row">
                         <label for="staticName" class="col-sm-5 col-form-label">{{ $t('name') }}</label>
                         <div class="col-sm-7">
@@ -93,7 +93,52 @@ const HomePage = {
                 </form>
 `,
     methods: {
-        
+        onSubmit() {
+            //Добавление полей в формы в объект FormData() - передача файлов
+            var userData = new FormData();
+            userData.append('name', $('input[name="staticName"]').val());
+
+            $.ajax({
+                type: 'POST',
+                url: 'serverValid.php',
+                data: userData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+
+                    let result = JSON.parse(data);
+                    //Смена языка вывода ошибок
+                    let position = $('#langPosition').val();
+                    let errorCount = 0;
+                    console.log(result);
+                    
+                    //Отображение результатов валидации
+                    result.forEach(function (item, i, arr) {
+                        let gj = item.field;
+                        if (item.status == 'error') {
+                            errorCount++;
+                            let fieldName = $('label[for*=' + gj + ']').text();
+
+                            $('input[id*=' + gj + ']').removeClass('is-valid');
+                            $('input[id*=' + gj + ']').addClass('is-invalid');
+                            $('input[id*=' + gj + ']').next().text(fieldName + item.errors[position])
+                        } else {
+                            $('input[id*=' + gj + ']').removeClass('is-invalid');
+                            $('input[id*=' + gj + ']').addClass('is-valid');
+                        }
+
+                    });
+
+                    if (errorCount == 0) {
+                        //Валидация прошла успешно
+                    }
+
+                }.bind(this),
+                error: function (xhr, str) {
+                    alert('Возникла ошибка: ' + xhr.responseCode);
+                }
+            });
+        }
     },
     computed: {
         
