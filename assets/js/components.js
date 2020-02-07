@@ -16,7 +16,9 @@ const i18n = new VueI18n({
             confpass: "Confirm Password",
             addfile: "Add File",
             registr: "Registration",
-            regButton: "Sign up"            
+            regButton: "Sign up",
+            userSuccess: 'User',
+            userRegis: 'successfully registered',            
         },
         ru: {
             name: "Имя",
@@ -26,7 +28,9 @@ const i18n = new VueI18n({
             confpass: "Подтв. Пароля",
             addfile: "Загрузка Файла",
             registr: "Регистрация",
-            regButton: "Зарегистрироваться"
+            regButton: "Зарегистрироваться",
+            userSuccess: 'Пользователь',
+            userRegis: 'успешно зарегестрирован',
         }
     }
 });
