@@ -16,7 +16,9 @@ const i18n = new VueI18n({
             confpass: "Confirm Password",
             addfile: "Add File",
             registr: "Registration",
-            regButton: "Sign up"            
+            regButton: "Sign up",
+            signButton: "Sign in",
+            login: "Login",            
         },
         ru: {
             name: "Имя",
@@ -26,7 +28,9 @@ const i18n = new VueI18n({
             confpass: "Подтв. Пароля",
             addfile: "Загрузка Файла",
             registr: "Регистрация",
-            regButton: "Зарегистрироваться"
+            regButton: "Зарегистрироваться",
+            signButton: "Войти",
+            login: "Вход",
         }
     }
 });
@@ -60,7 +64,7 @@ const HomePage = {
                     <div class="form-group row">
                         <label for="staticEmail" class="col-sm-5 col-form-label">Email</label>
                         <div class="col-sm-7">
-                            <input type="email" class="form-control" id="staticEmail" name="staticEmail" aria-describedby="emailHelp" placeholder="name@example.com">
+                            <input type="text" class="form-control" id="staticEmail" name="staticEmail" aria-describedby="emailHelp" placeholder="name@example.com">
                             <div class="invalid-feedback">
                             </div>
                         </div>                        
@@ -100,11 +104,103 @@ const HomePage = {
     }
 };
 
+//Компонент для Авторизации (форма)
+
+const LoginPage = {
+    data() {
+        return {
+           
+        }
+    },
+    template: `
+<form @submit.prevent="onSubmit" id="signinForm" method="post" class="mt-5" action="">                   
+                    
+                <div class="form-group row">
+                    <label for="staticEmail" class="col-sm-5 col-form-label">Email</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" id="staticEmail" name="staticEmail" aria-describedby="emailHelp" placeholder="name@example.com">
+                        <div class="invalid-feedback">
+                            Please provide a valid city.
+                        </div>
+                    </div>                        
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-5 col-form-label">{{ $t('password') }}</label>
+                    <div class="col-sm-7">
+                        <input type="password" class="form-control" id="inputPassword" name="inputPassword" :placeholder="$t('password')">
+                        <div class="invalid-feedback">
+                            Please provide a valid city.
+                        </div>
+                    </div>
+                </div>
+
+                    <input type="hidden" name="log_in">
+                    <button class="btn btn-primary mb-2" name="log_in">{{ $t('signButton') }}</button>
+                </form>
+`,
+    methods: {
+        onSubmit() {
+            var msg = $('#signinForm').serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: 'serverAuth.php',
+                data: msg,
+
+                success: function (data) {
+
+                    let position = $('#langPosition').val();                    
+                    let errorCount = 0;
+                    let result = JSON.parse(data);
+                    //console.log('auth' in result);
+                    // console.log(data);
+                    if ('auth' in result) {
+                        if (result.auth == 'login') {
+                            //авторизация прошла успешно
+                        } else {
+                            console.log(position);
+                            console.log(result);
+                            
+                            $('input[id*=staticEmail]').removeClass('is-valid');
+                            $('input[id*=staticEmail]').addClass('is-invalid');
+                            $('input[id*=staticEmail]').next().text(result.errors[position])
+                        }
+                    } else {
+                        result.forEach(function (item, i, arr) {
+                            let gj = item.field;
+                            if (item.status == 'error') {
+                                errorCount++;
+                                let fieldName = $('label[for*=' + gj + ']').text();
+
+                                $('input[id*=' + gj + ']').removeClass('is-valid');
+                                $('input[id*=' + gj + ']').addClass('is-invalid');
+                                $('input[id*=' + gj + ']').next().text(fieldName + item.errors[position])
+                            } else {
+                                $('input[id*=' + gj + ']').removeClass('is-invalid');
+                                $('input[id*=' + gj + ']').addClass('is-valid');
+                            }
+
+                        });
+                    }
+
+                }.bind(this),
+                error: function (xhr, str) {
+                    alert('Возникла ошибка: ' + xhr.responseCode);
+                }
+            });
+        }
+    },
+    computed: {
+        
+    }
+};
+
 
 // Связываем маршруты с компонентами
 
 const routes = [
-    { path: '/', component: HomePage }
+    { path: '/', component: HomePage },
+    { path: '/login', component: LoginPage }
 ];
 
 // Передаём routes во VueRoutes routes: routes
