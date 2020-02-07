@@ -140,6 +140,13 @@ const HomePage = {
 
                     if (errorCount == 0) {
                         //Валидация прошла успешно
+                        $('#regSuccess').text(
+                            this.$t('userSuccess') + ' ' + $('input[name="staticEmail"]').val() + ' ' + this.$t('userRegis')
+                        );
+                        $('#regSuccess').css("display", "block");
+                        setTimeout(function () {
+                            $('#regSuccess').fadeOut('slow');
+                        }, 3000);
                     }
 
                 }.bind(this),
