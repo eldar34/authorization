@@ -60,7 +60,7 @@ const HomePage = {
                     <div class="form-group row">
                         <label for="staticEmail" class="col-sm-5 col-form-label">Email</label>
                         <div class="col-sm-7">
-                            <input type="email" class="form-control" id="staticEmail" name="staticEmail" aria-describedby="emailHelp" placeholder="name@example.com">
+                            <input type="text" class="form-control" id="staticEmail" name="staticEmail" aria-describedby="emailHelp" placeholder="name@example.com">
                             <div class="invalid-feedback">
                             </div>
                         </div>                        
@@ -97,6 +97,8 @@ const HomePage = {
             //Добавление полей в формы в объект FormData() - передача файлов
             var userData = new FormData();
             userData.append('name', $('input[name="staticName"]').val());
+            userData.append('surname', $('input[name="staticSurname"]').val());
+            userData.append('email', $('input[name="staticEmail"]').val());
 
             $.ajax({
                 type: 'POST',

@@ -34,4 +34,23 @@ class Validate
         }
     }
 
+    public function forEmail($fieldName, $props){
+        $response = [];
+        $errors = [];
+
+        if (filter_var($props, FILTER_VALIDATE_EMAIL)) {
+            $response['status'] = 'success';
+            $response['field'] = $fieldName;
+            return $response;
+        }else {
+            array_push($errors,' not valid');
+            array_push($errors,' не валидно');
+            $response['status'] = 'error';
+            $response['field'] = $fieldName;
+            $response['errors'] = $errors;
+            return $response;
+        }
+    }
+   
+
 }
