@@ -316,6 +316,24 @@ new Vue({
         })
     },
     beforeCreate: function () {
-        
+        if (router.currentRoute.path != '/user') {
+            $.ajax({
+                type: 'POST',
+                url: 'serverLogin.php',
+
+
+                success: function (data) {
+                    let result = JSON.parse(data);
+                    if (result.auth == 'login') {
+                        router.push('/user')
+                    } else {
+                        console.log(result)
+                    }
+                }.bind(this),
+                error: function (xhr, str) {
+                    alert('Возникла ошибка: ' + xhr.responseCode);
+                }
+            });
+        }
     }
 });
