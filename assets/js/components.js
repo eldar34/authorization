@@ -127,7 +127,7 @@ const HomePage = {
                     //Смена языка вывода ошибок
                     let position = $('#langPosition').val();
                     let errorCount = 0;
-                    console.log(result);
+                    // console.log(result);
                     
                     //Отображение результатов валидации
                     result.forEach(function (item, i, arr) {
@@ -155,6 +155,7 @@ const HomePage = {
                         setTimeout(function () {
                             $('#regSuccess').fadeOut('slow');
                         }, 3000);
+                        this.$router.push({ path: '/login' })
                     }
 
                 }.bind(this),
@@ -218,14 +219,14 @@ const LoginPage = {
                     let errorCount = 0;
                     let result = JSON.parse(data);
                     //console.log('auth' in result);
-                    // console.log(data);
+                    // console.log(result);
                     if ('auth' in result) {
                         if (result.auth == 'login') {
                             //авторизация прошла успешно
                             this.$router.push('/user');
                         } else {
-                            console.log(position);
-                            console.log(result);
+                            // console.log(position);
+                            // console.log(result);
                             
                             $('input[id*=staticEmail]').removeClass('is-valid');
                             $('input[id*=staticEmail]').addClass('is-invalid');
@@ -354,7 +355,7 @@ new Vue({
 
                 success: function (data) {
                     let result = JSON.parse(data);
-                    console.log(result);
+                    // console.log(result);
                 }.bind(this),
                 error: function (xhr, str) {
                     alert('Возникла ошибка: ' + xhr.responseCode);
@@ -380,13 +381,12 @@ new Vue({
                 type: 'POST',
                 url: 'serverLogin.php',
 
-
                 success: function (data) {
                     let result = JSON.parse(data);
                     if (result.auth == 'login') {
                         router.push('/user')
                     } else {
-                        console.log(result)
+                        // console.log(result)
                     }
                 }.bind(this),
                 error: function (xhr, str) {

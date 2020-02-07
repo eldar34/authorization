@@ -3,6 +3,7 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 use App\Auth;
+use App\Validate;
 
 $auth = new Auth();
 
@@ -19,6 +20,21 @@ if (isset($_POST['staticEmail'])) {
 }
 if (isset($_POST['inputPassword'])) {
     $pass = $_POST['inputPassword'];
+}
+
+$result = [];
+
+$validate = new Validate();
+$validEmail = $validate->forEmail('staticEmail', $login);
+array_push($result, $validEmail);
+$validPass = $validate->forPass('Pass', $pass, $pass);
+array_push($result, $validPass);
+
+$status_arr = array_column($result, 'status');
+
+if (in_array('error', $status_arr)) {
+    echo json_encode($result);
+    exit;
 }
 
 if ($auth->login()) {

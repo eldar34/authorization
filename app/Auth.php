@@ -190,6 +190,10 @@ class Auth
 
         if (isset($_SESSION['id'])) //если сесcия есть   
         {
+                    // $response['auth'] = 'login';
+                    // $response['user_id'] = $_SESSION['id'];
+                    // echo json_encode($response);
+                    // exit;
             if (isset($_COOKIE['login']) && isset($_COOKIE['password']))
             //если cookie есть, обновляется время их жизни и возвращается true      
             {
