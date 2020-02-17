@@ -28,9 +28,9 @@ class Auth
                 if ($newPassword == $myrow['password']) //сравнивается хэшированный пароль из базы данных с хэшированными паролем, введённым пользователем                        
                 {
                     //пишутся логин и хэшированный пароль в cookie, также создаётся переменная сессии
-                    $userName = str_replace(['@', '.'], [2, 1], $myrow['email']);
+                    //$userName = str_replace(['@', '.'], [2, 1], $myrow['email']);
                     
-                    setcookie("login", $userName, time() + 3600, '/');
+                    setrawcookie("login", $myrow['email'], time() + 3600, '/');
                     setcookie("password", $myrow['password'], time() + 3600, '/');
                     $_SESSION['id'] = $myrow['id'];   //записываем в сессию id пользователя               
 
@@ -86,7 +86,7 @@ class Auth
                 SetCookie("login", "", time() - 1, '/');
                 SetCookie("password", "", time() - 1, '/');
 
-                setcookie("login", $_COOKIE['login'], time() + 3600, '/');
+                setrawcookie("login", $_COOKIE['login'], time() + 3600, '/');
                 setcookie("password", $_COOKIE['password'], time() + 3600, '/');
 
                 $id = $_SESSION['id'];
@@ -104,7 +104,7 @@ class Auth
                 {
                     $myrow = $rez->fetch(); //она записывается в ассоциативный массив               
 
-                    setcookie("login", $myrow['email'], time() + 3600, '/');
+                    setrawcookie("login", $myrow['email'], time() + 3600, '/');
                     setcookie("password", $myrow['password'], time() + 3600, '/');
 
                     $id = $_SESSION['id'];
@@ -119,7 +119,8 @@ class Auth
         {
             if (isset($_COOKIE['login']) && isset($_COOKIE['password'])) //если куки существуют  
             {
-                $userName = str_replace(['2', '1'], ['@', '.'], $_COOKIE['login']);
+                //$userName = str_replace(['2', '1'], ['@', '.'], $_COOKIE['login']);
+                $userName = $_COOKIE['login'];
 
                 $rez = $pdo->query("SELECT * FROM users WHERE email='$userName'");
                 //запрашивается строка с искомым логином и паролем             
@@ -200,13 +201,14 @@ class Auth
                 SetCookie("login", "", time() - 1, '/');
                 SetCookie("password", "", time() - 1, '/');
 
-                setcookie("login", $_COOKIE['login'], time() + 3600, '/');
+                setrawcookie("login", $_COOKIE['login'], time() + 3600, '/');
                 setcookie("password", $_COOKIE['password'], time() + 3600, '/');
 
                 $id = $_SESSION['id'];
                 $this->lastAct($id);
 
-                $userName = str_replace(['2', '1'], ['@', '.'], $_COOKIE['login']);
+                // $userName = str_replace(['2', '1'], ['@', '.'], $_COOKIE['login']);
+                $userName = $_COOKIE['login'];
 
                 $rez = $pdo->query("SELECT * FROM users WHERE email='$userName'");
                 
@@ -215,9 +217,9 @@ class Auth
                 if ($rez->rowCount() == 1) //если получена одна строка         
                 {
                     $myrow = $rez->fetch(); //она записывается в ассоциативный массив  
-                    $userName = str_replace(['@', '.'], [2, 1], $myrow['email']);             
+                    // $userName = str_replace(['@', '.'], [2, 1], $myrow['email']);             
 
-                    setcookie("login", $userName, time() + 3600, '/');
+                    setrawcookie("login", $myrow['email'], time() + 3600, '/');
                     setcookie("password", $myrow['password'], time() + 3600, '/');
 
                     $id = $_SESSION['id'];
@@ -249,9 +251,9 @@ class Auth
                 if ($rez->rowCount() == 1) //если получена одна строка         
                 {
                     $myrow = $rez->fetch(); //она записывается в ассоциативный массив 
-                    $userName = str_replace(['@', '.'], [2, 1], $myrow['email']);              
+                    // $userName = str_replace(['@', '.'], [2, 1], $myrow['email']);              
 
-                    setcookie("login", $userName, time() + 3600, '/');
+                    setrawcookie("login", $myrow['email'], time() + 3600, '/');
                     setcookie("password", $myrow['password'], time() + 3600, '/');
 
                     $id = $_SESSION['id'];
